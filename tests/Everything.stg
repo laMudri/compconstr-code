@@ -1,0 +1,32 @@
+map0 = {} \n {f,xs} ->
+  letrec m = {f} \u {ys} ->
+    case ys {} of
+      Nil {} -> Nil {};
+      Cons {z,zs} ->
+        let fz = {f,z} \u {} -> f {z};
+            ih = {m,zs} \u {} -> m {zs};
+        in Cons {fz,ih};
+      default -> undefined {};
+  in m {xs};
+
+sum = {} \n {xs} ->
+  letrec f = {} \u {acc,xs} ->
+    case ys {} of
+      Nil {} -> acc {};
+      Cons {y,ys} ->
+        let accDash = {y,acc} \u {} -> +# {y,acc};
+            fAccDash = {f,accDash} \u {} -> f {accDash};
+        in fAccDash {ys};
+      default -> undefined {};
+  in f {0#,xs};
+
+allZero = {} \u {xs} ->
+  case sum {xs} of
+    0# -> True {};
+    default -> False {};
+
+someNumber = {} \n {} ->
+  let s = {} \n {} -> +# {1#,2#};
+      p = {} \n {} -> *# {s,3#};
+      m = {} \n {} -> -# {p,2#};
+  in /# {m,2#};
