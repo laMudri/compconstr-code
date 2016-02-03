@@ -177,3 +177,12 @@ instance PP DefaultAlt where
 instance PP Atom where
     pp (VarAtom var pos) = pp pos <> text var
     pp (LitAtom lit pos) = pp pos <> pp lit
+
+exprPosn :: Expr -> Posn
+exprPosn (LetE _ _ posn) = posn
+exprPosn (LetRecE _ _ posn) = posn
+exprPosn (CaseE _ _ posn) = posn
+exprPosn (AppE _ _ posn) = posn
+exprPosn (CtrE _ _ posn) = posn
+exprPosn (OpE _ _ posn) = posn
+exprPosn (LitE _ posn) = posn
