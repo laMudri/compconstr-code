@@ -101,6 +101,11 @@ data AExpr a
         ctrAtoms :: [Atom],
         ctrPosn  :: Posn
     }
+    | CtrE {
+        ctrCtr   :: Ctr,
+        ctrAtoms :: [Atom],
+        ctrPosn  :: Posn
+    }
     | OpE {
         opType  :: PrimOp,
         opAtoms :: [AAtom a],

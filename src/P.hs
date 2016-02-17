@@ -18,6 +18,10 @@ import Prelude hiding (union)
 import Data.Set (Set, union, (\\))
 import qualified Data.Set as S
 
+import Prelude hiding (union)
+import Data.Set (Set, union, (\\))
+import qualified Data.Set as S
+
 --------------------------------------------------------------------------------
 
 newtype P a = MkP { runParser :: AlexState -> Either String a }
