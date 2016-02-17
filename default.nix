@@ -3,7 +3,7 @@ let
   inherit (pkgs) stdenv haskellPackages;
 
   hask-env = haskellPackages.ghcWithPackages (pkgs:
-    with pkgs; [ array dlist pretty optparse-applicative alex happy containers ]);
+    with pkgs; [ array dlist pretty optparse-applicative alex happy containers mtl ]);
 in stdenv.mkDerivation {
   name = "stg";
   src = ./.;
