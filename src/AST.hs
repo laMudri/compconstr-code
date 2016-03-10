@@ -96,6 +96,16 @@ data AExpr a
         ctrAtoms :: [AAtom a],
         exprAnn  :: a
     }
+    | CtrE {
+        ctrCtr   :: Ctr,
+        ctrAtoms :: [Atom],
+        ctrPosn  :: Posn
+    }
+    | CtrE {
+        ctrCtr   :: Ctr,
+        ctrAtoms :: [Atom],
+        ctrPosn  :: Posn
+    }
     | OpE {
         opType  :: PrimOp,
         opAtoms :: [AAtom a],
@@ -239,3 +249,12 @@ instance PP a => PP (ADefaultAlt a) where
 instance PP a => PP (AAtom a) where
     pp (VarAtom var pos) = pp pos <> pp var
     pp (LitAtom lit pos) = pp pos <> pp lit
+
+exprPosn :: Expr -> Posn
+exprPosn (LetE _ _ posn) = posn
+exprPosn (LetRecE _ _ posn) = posn
+exprPosn (CaseE _ _ posn) = posn
+exprPosn (AppE _ _ posn) = posn
+exprPosn (CtrE _ _ posn) = posn
+exprPosn (OpE _ _ posn) = posn
+exprPosn (LitE _ posn) = posn

@@ -17,6 +17,8 @@ import Pretty
 import Prim
 import AST
 
+import Data.List (find, (\\))
+
 --------------------------------------------------------------------------------
 
 -- | The type of memory addresses.
@@ -229,7 +231,7 @@ step (Eval (CtrE c xs _) p, as, rs, us, h, env) = do
 -- Rule 6 (ReturnCon Case Match)
 step (ReturnCon c ws, as, (AlgAlts cs d, p) : rs, us, h, env) = do
     case patternMatchCtr c cs of
-        -- Rule 6 (ReturnCon Case Match)
+        -- Rule 7 (ReturnCon Case Match)
         (Just (AAlt _ vs e _)) -> do
             let
                 p' = p `M.union` M.fromList (zip (map varName vs) ws)

@@ -24,6 +24,14 @@ import Interpreter
 import TypeInference
 import CodeGen
 
+import AST (progBinds, bindLF, LambdaForm(..), Var, exprPosn)
+import P (validateFVS, getProgLFS)
+import Posn
+
+import Data.Set (Set)
+import qualified Data.Set as S
+import Data.List (intercalate)
+
 --------------------------------------------------------------------------------
 
 -- | `confirm k' prompts the user to confirm whether an action `k' should be
@@ -53,6 +61,28 @@ steps cfg = do
     case step cfg of
         Nothing     -> putStrLn "Can't reduce further."
         (Just cfg') -> confirm (steps cfg')
+
+relate :: (a -> b) -> a -> (a, b)
+relate f x = (x, f x)
+
+data VarInLF = MkVarInLF LambdaForm Var
+
+instance Eq VarInLF where
+    MkVarInLF _ x == MkVarInLF _ y = x == y
+instance Ord VarInLF where
+    compare (MkVarInLF _ x) (MkVarInLF _ y) = compare x y
+
+showLfvs :: [(LambdaForm, Var)] -> String
+showLfvs = intercalate ", " . map f
+  where
+    f :: (LambdaForm, Var) -> String
+    f (MkLambdaForm _ _ _ expr, var) =
+        var ++ " " ++ g (exprPosn expr)
+
+    g :: Posn -> String
+    g EoFPosn = "EOF"
+    g NoPosn = "<>"
+    g (FilePosn l c) = "<" ++ show l ++ "," ++ show c ++ ">"
 
 -- | The main entry point for the compiler.
 main :: IO ()
