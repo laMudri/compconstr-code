@@ -24,30 +24,30 @@ class DoesHeapAlloc a where
 instance DoesHeapAlloc (ABind a) where
     -- this should calculate the amount of memory needed to store a closure
     -- for this binding / lambda-form on the heap
-    heapCost (MkBind v lf t) = 0
+    heapCost (MkBind v lf t) = closureSize lf
 
 instance DoesHeapAlloc (AExpr a) where
-    heapCost (LetE bs e a)    = 0
-    heapCost (LetRecE bs e a) = 0
-    heapCost (CaseE e as a)   = 0
-    heapCost (CtrE c as a)    = 0
+    heapCost (LetE bs e a)    = sum (map heapCost bs) + heapCost e
+    heapCost (LetRecE bs e a) = sum (map heapCost bs) + heapCost e
+    heapCost (CaseE e as a)   = heapCost e + heapCost as
+    heapCost (CtrE c as a)    = 1 + length as
     heapCost _                = 0
 
 instance DoesHeapAlloc (AAlts a) where
-    heapCost (PrimAlts [] d) = 0
-    heapCost (PrimAlts as d) = 0
-    heapCost (AlgAlts [] d)  = 0
-    heapCost (AlgAlts as d)  = 0
+    heapCost (PrimAlts [] d) = heapCost d
+    heapCost (PrimAlts as d) = sum (map heapCost as) + heapCost d
+    heapCost (AlgAlts [] d)  = heapCost d
+    heapCost (AlgAlts as d)  = sum (map heapCost as) + heapCost d
 
 instance DoesHeapAlloc (ADefaultAlt a) where
-    heapCost (Default e t)      = 0
-    heapCost (DefaultVar v e t) = 0
+    heapCost (Default e t)      = heapCost e
+    heapCost (DefaultVar v e t) = heapCost e
 
 instance DoesHeapAlloc (APrimAlt a) where
-    heapCost (PAlt k e t) = 0
+    heapCost (PAlt k e t) = heapCost e
 
 instance DoesHeapAlloc (AAlgAlt a) where
-    heapCost (AAlt c as e t) = 0
+    heapCost (AAlt c as e t) = heapCost e - (1 + length as)
 
 --------------------------------------------------------------------------------
 
