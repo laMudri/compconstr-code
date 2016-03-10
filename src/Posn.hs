@@ -21,7 +21,7 @@ data Posn
     -- posnFileName :: FilePath,   -- ^ The name of the file.
     posnLine     :: Int,        -- ^ The line number.
     posnColumn   :: Int         -- ^ The column number.
- }
+ } deriving (Eq, Ord)
 
 --------------------------------------------------------------------------------
 

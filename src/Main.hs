@@ -24,9 +24,10 @@ import Interpreter
 import TypeInference
 import CodeGen
 
-import AST (progBinds, bindLF, LambdaForm(..), Var, exprPosn)
+import AST (progBinds, bindLF, LambdaForm(..), ALambdaForm(..), exprPosn)
 import P (validateFVS, getProgLFS)
 import Posn
+import Var
 
 import Data.Set (Set)
 import qualified Data.Set as S
@@ -77,7 +78,7 @@ showLfvs = intercalate ", " . map f
   where
     f :: (LambdaForm, Var) -> String
     f (MkLambdaForm _ _ _ expr, var) =
-        var ++ " " ++ g (exprPosn expr)
+        varName var ++ " " ++ g (exprPosn expr)
 
     g :: Posn -> String
     g EoFPosn = "EOF"

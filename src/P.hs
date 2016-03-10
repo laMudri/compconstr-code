@@ -171,7 +171,7 @@ defaultAltFVS bvs (Default expr _) = exprFVS bvs expr
 defaultAltFVS bvs (DefaultVar v expr _) = exprFVS (S.insert v bvs) expr
 
 validateFVS :: Prog -> LambdaForm -> (Set Var, Set Var)
-validateFVS (MkProg binds) (MkLambdaForm fvs _ vs expr) =
+validateFVS (MkProg _ binds) (MkLambdaForm fvs _ vs expr) =
   let found =
        exprFVS (S.fromList vs `union` S.fromList (map bindName binds)) expr in
   let declared = S.fromList fvs in
@@ -180,7 +180,7 @@ validateFVS (MkProg binds) (MkLambdaForm fvs _ vs expr) =
 type GetLFS a = a -> [LambdaForm]
 
 getProgLFS :: GetLFS Prog
-getProgLFS (MkProg binds) = getBindLFS =<< binds
+getProgLFS (MkProg _ binds) = getBindLFS =<< binds
 
 getBindLFS :: GetLFS Bind
 getBindLFS (MkBind _ lf _) = lf : getLFLFS lf

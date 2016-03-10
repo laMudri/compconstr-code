@@ -16,7 +16,7 @@ import Pretty
 data AVar a = Var {
     varName :: String,
     varAnn  :: a
-} deriving (Eq, Functor)
+} deriving (Eq, Ord, Functor)
 
 -- | Variables with position annotations, for compatability.
 type Var = AVar Posn
